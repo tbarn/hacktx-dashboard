@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HackTX GitHub Data</title>
+  <link rel="stylesheet" type="text/css" href="../static/lib/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="../static/css/keen-dashboards.css" />
+  <link rel="shortcut icon" type="image/x-icon" href="../static/img/favicon.ico"/>
+</head>
+<body class="application">
+
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="./">HackTX GitHub Data</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-left">
+          <li><a href="https://keen.io/docs/">Keen IO Docs</a></li>
+          <li><a href="http://keen.github.io/dashboards/">Keen IO Dashboard Examples</a></li>
+          <li><a href="https://keen.io/guides/getting-started/">Getting Started Guide</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-sm-6">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Pushers By GitHub ID
+          </div>
+          <div class="chart-stage" id="chart-02">
+
+          </div>
+<!--           <div class="chart-notes">
+            This is a sample text region to describe this chart.
+          </div> -->
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Issues Open By Repository
+          </div>
+          <div class="chart-stage" id="chart-03">
+
+          </div>
+<!--           <div class="chart-notes">
+            Notes go down here
+          </div> -->
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="row">
+
+      <div class="col-sm-12">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Pushes
+          </div>
+          <div class="chart-stage" id="chart-01">
+
+          </div>
+<!--           <div class="chart-notes">
+            Notes go down here
+          </div> -->
+        </div>
+      </div>
+
+    </div>
+    <div class="row">
+
+      <div class="col-sm-12">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Stars by Repository
+          </div>
+          <div class="chart-stage" id="chart-04">
+
+          </div>
+<!--           <div class="chart-notes">
+            Notes go down here
+          </div> -->
+        </div>
+      </div>
+
+    </div>
+    <hr>
+
+    <p class="small text-muted">Last 15 days of data, including today's live data - Built with &#9829; by <a href="https://keen.io">Keen IO</a></p>
+
+  </div>
+
+  <script type="text/javascript" src="../static/lib/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="../static/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="../static/lib/holderjs/holder.js"></script>
+  <script>
+    Holder.add_theme("white", { background:"#fff", foreground:"#a7a7a7", size:10 });
+  </script>
+
+  <script type="text/javascript" src="../static/lib/keen-js/dist/keen.min.js"></script>
+  <script type="text/javascript" src="../static/js/meta.js"></script>
+
+<script>
+
+var client = new Keen({
+  projectId: "55f0a9fc59949a79cebce01b",
+  readKey: "4450a2e79b4d4bc16d9ba672a1957cc1ea91a12322d7000741f5d0127ee204f4c45a6004d7faf84aa487cbd00ab3c4a95ec61c140b77542ae2612fc0ebd0a00ffb5867a5e32a062c7c5722a6531158a9c24b82ea6c3b8201e756fbe3daf352a3d28654944238e4e2beea89783bcfda12"
+});
+
+Keen.ready(function(){
+
+  var pushes = new Keen.Query("count", {
+    eventCollection: "gh",
+    filters: [{"operator":"exists","property_name":"commits","property_value":true}],
+    interval: "hourly",
+    timeframe: "this_15_days",
+    timezone: "US/Central"
+  });
+  
+  client.draw(pushes, document.getElementById("chart-01"), {
+    chartType: "columnchart",
+    titlePosition: 'none'
+  });
+
+  var pushers = new Keen.Query("count", {
+    eventCollection: "gh",
+    filters: [{"operator":"exists","property_name":"commits","property_value":true},{"operator":"ne","property_name":"head_commit","property_value":null}],
+    groupBy: "head_commit.author.username",
+    timeframe: "this_15_days",
+    timezone: "UTC"
+  });
+  
+  client.draw(pushers, document.getElementById("chart-02"), {
+    chartType: "piechart",
+    titlePosition: 'none'
+  });
+
+  var open_issues = new Keen.Query("count", {
+    eventCollection: "gh",
+    filters: [{"operator":"eq","property_name":"action","property_value":"opened"},{"operator":"exists","property_name":"issue.id","property_value":true}],
+    groupBy: "repository.full_name",
+    timeframe: "this_15_days",
+    timezone: "US/Central"
+  });
+
+  client.draw(open_issues, document.getElementById("chart-03"), {
+    chartType: "piechart",
+    titlePosition: 'none'
+  });
+
+  var stars = new Keen.Query("count", {
+    eventCollection: "gh",
+    filters: [{"operator":"eq","property_name":"action","property_value":"started"}],
+    groupBy: "repository.name",
+    timeframe: "this_15_days",
+    timezone: "UTC"
+  });
+  
+  client.draw(stars, document.getElementById("chart-04"), {
+    chartType: "barchart",
+    titlePosition: 'none',
+    legend: {position: 'none'}
+  });
+
+});
+</script>
+
+</body>
+</html>
