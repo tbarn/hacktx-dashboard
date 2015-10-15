@@ -99,7 +99,7 @@
     </div>
     <hr>
 
-    <p class="small text-muted">Last 15 days of data, including today's live data - Built with &#9829; by <a href="https://keen.io">Keen IO</a></p>
+    <p class="small text-muted">Last 30 days of data, including today's live data - Built with &#9829; by <a href="https://keen.io">Keen IO</a></p>
 
   </div>
 
@@ -127,7 +127,7 @@ Keen.ready(function(){
     eventCollection: "gh",
     filters: [{"operator":"exists","property_name":"commits","property_value":true}],
     interval: "hourly",
-    timeframe: "this_15_days",
+    timeframe: "this_30_days",
     timezone: "US/Central"
   });
   
@@ -140,7 +140,7 @@ Keen.ready(function(){
     eventCollection: "gh",
     filters: [{"operator":"exists","property_name":"commits","property_value":true},{"operator":"ne","property_name":"head_commit","property_value":null}],
     groupBy: "head_commit.author.username",
-    timeframe: "this_15_days",
+    timeframe: "this_30_days",
     timezone: "UTC"
   });
   
@@ -153,7 +153,7 @@ Keen.ready(function(){
     eventCollection: "gh",
     filters: [{"operator":"eq","property_name":"action","property_value":"opened"},{"operator":"exists","property_name":"issue.id","property_value":true}],
     groupBy: "repository.full_name",
-    timeframe: "this_15_days",
+    timeframe: "this_30_days",
     timezone: "US/Central"
   });
 
@@ -166,7 +166,7 @@ Keen.ready(function(){
     eventCollection: "gh",
     filters: [{"operator":"eq","property_name":"action","property_value":"started"}],
     groupBy: "repository.name",
-    timeframe: "this_15_days",
+    timeframe: "this_30_days",
     timezone: "UTC"
   });
   
