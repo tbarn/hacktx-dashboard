@@ -1,4 +1,4 @@
-# HackTX Demo Code - see it live [here](bit.ly/hacktxkeen)
+# HackTX Demo Code - see it live [here](https://bit.ly/hacktxkeen)
 
 ### Deployed with [Heroku](https://devcenter.heroku.com/articles/getting-started-with-python-o)
 
